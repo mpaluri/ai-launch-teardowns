@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Launch Teardowns</title>
+<meta name="description" content="Structured 11-section competitive intelligence analyses of AI launches with 10-question quizzes — separating signal from hype.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f6f8fa;--text:#1f2328;--text2:#656d76;--border:#d0d7de;--accent:#0969da;--accent-bg:#ddf4ff;--green:#1a7f37;--green-bg:#dafbe1;--amber:#bf8700;--amber-bg:#fff8c5}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--bg2:#161b22;--text:#e6edf3;--text2:#8b949e;--border:#30363d;--accent:#58a6ff;--accent-bg:#1a2332;--green:#2ea043;--green-bg:#0f2d16;--amber:#e3b341;--amber-bg:#2a2000}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:720px;margin:0 auto;padding:3rem 1.5rem 5rem}
+h1{font-size:1.75rem;font-weight:700;margin-bottom:.5rem}
+.subtitle{color:var(--text2);font-size:1rem;margin-bottom:2.5rem}
+h2{font-size:.8rem;font-weight:600;margin-bottom:1rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.teardown-card{display:block;text-decoration:none;color:inherit;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:.75rem;transition:border-color .15s}
+.teardown-card:hover{border-color:var(--accent)}
+.teardown-card h3{font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.teardown-card p{font-size:.875rem;color:var(--text2);margin:0}
+.card-meta-row{display:flex;gap:.5rem;margin-top:.65rem;flex-wrap:wrap;align-items:center}
+.tag{font-size:.7rem;padding:2px 8px;border-radius:4px;background:var(--accent-bg);color:var(--accent);font-weight:500;font-family:'JetBrains Mono',monospace}
+.score-badge{font-size:.7rem;padding:2px 8px;border-radius:4px;font-weight:600;font-family:'JetBrains Mono',monospace}
+.score-badge.high{background:var(--green-bg);color:var(--green)}
+.score-badge.mid{background:var(--amber-bg);color:var(--amber)}
+.how-it-works{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border)}
+.how-it-works h2{margin-bottom:1rem}
+.section-row{display:flex;gap:1rem;margin-bottom:.5rem;align-items:baseline}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--accent);color:#fff;margin-top:3px}
+.section-row p{font-size:.875rem}
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.8rem;color:var(--text2)}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AI Launch Teardowns</h1>
+  <p class="subtitle">Structured 11-section competitive intelligence analyses with 10-question quizzes &mdash; separating signal from hype.</p>
+
+  <h2>Teardowns</h2>
+
+  <a class="teardown-card" href="teardowns/openai-erdos-disproof.html">
+    <h3>OpenAI: Erd&#337;s Unit Distance Disproof</h3>
+    <p>A general-purpose reasoning model autonomously disproved the 80-year-old Erd&#337;s unit distance conjecture using unexpected algebraic number theory &mdash; first AI to solve a prominent open research problem. Verified by Fields medalist Tim Gowers. Cost &lt;$1,000 in compute.</p>
+    <div class="card-meta-row">
+      <span class="score-badge high">18/20</span>
+      <span class="tag">#reasoning</span>
+      <span class="tag">#math</span>
+      <span class="tag">#test-time-compute</span>
+      <span class="tag">#openai</span>
+      <span class="tag">#cross-domain</span>
+      <span class="tag">May 2026</span>
+    </div>
+  </a>
+
+  <a class="teardown-card" href="teardowns/spotify-umg-ai-remix.html">
+    <h3>Spotify &times; UMG: AI Remix Tool</h3>
+    <p>Spotify and Universal Music Group announced a licensing deal for a paid Premium add-on enabling AI-generated covers and remixes of participating artists&rsquo; songs &mdash; first major-label-blessed consumer music generation tool. Deal signed, product unshipped. Stock +14%.</p>
+    <div class="card-meta-row">
+      <span class="score-badge mid">14/20</span>
+      <span class="tag">#music-gen</span>
+      <span class="tag">#licensing</span>
+      <span class="tag">#consumer-product</span>
+      <span class="tag">#distribution-moat</span>
+      <span class="tag">#consent-framework</span>
+      <span class="tag">May 2026</span>
+    </div>
+  </a>
+
+  <div class="how-it-works">
+    <h2>The 11-Section Template</h2>
+    <div class="section-row"><div class="section-num">1</div><p><strong>What Launched</strong> &mdash; Company, product, access, pricing signal.</p></div>
+    <div class="section-row"><div class="section-num">2</div><p><strong>Version Context</strong> &mdash; Previous version delta, velocity, what&rsquo;s still broken.</p></div>
+    <div class="section-row"><div class="section-num">3</div><p><strong>What&rsquo;s Actually New</strong> &mdash; Genuine novelty vs. recycled packaging.</p></div>
+    <div class="section-row"><div class="section-num">4</div><p><strong>Technical Snapshot</strong> &mdash; Architecture, training data, scale signals.</p></div>
+    <div class="section-row"><div class="section-num">5</div><p><strong>Limitations &amp; Flags</strong> &mdash; Dealbreakers, monitoring items, acceptable trade-offs.</p></div>
+    <div class="section-row"><div class="section-num">6</div><p><strong>Relevance Matrix</strong> &mdash; Three-ring analysis: direct teams &rarr; research labs &rarr; platforms.</p></div>
+    <div class="section-row"><div class="section-num">7</div><p><strong>Competitive Positioning</strong> &mdash; Current standing, moat, who should worry.</p></div>
+    <div class="section-row"><div class="section-num">8</div><p><strong>The &ldquo;So What&rdquo;</strong> &mdash; What changes, what&rsquo;s the risk, one action item.</p></div>
+    <div class="section-row"><div class="section-num">9</div><p><strong>Scorecard</strong> &mdash; Novelty + Execution + Threat + Signal = /20.</p></div>
+    <div class="section-row"><div class="section-num">10</div><p><strong>Reception Check</strong> &mdash; Social pulse, press narrative, reality gap.</p></div>
+    <div class="section-row"><div class="section-num">11</div><p><strong>Tags</strong> &mdash; Category labels for cross-referencing.</p></div>
+    <p style="font-size:.9rem;color:var(--text2);margin-top:1rem">Each teardown ends with a 10-question quiz covering all sections. Score 8/10 or higher to pass.</p>
+  </div>
+
+  <footer>Built as a competitive intelligence project. All cited sources retain their original licenses.</footer>
+</div>
+</body>
+</html>

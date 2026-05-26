@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Launch Teardown: OpenAI Erdős Unit Distance Disproof</title>
+<meta name="description" content="11-section competitive intelligence teardown of OpenAI's internal reasoning model disproving the 80-year-old Erdős unit distance conjecture — first AI to solve a prominent open research problem. Score: 18/20.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f6f8fa;--text:#1f2328;--text2:#656d76;--text3:#8b949e;--border:#d0d7de;--accent:#0969da;--accent-bg:#ddf4ff;--green:#1a7f37;--green-bg:#dafbe1;--red:#cf222e;--red-bg:#ffebe9;--code-bg:#f0f0f0;--purple:#8250df;--purple-bg:#fbefff;--amber:#bf8700;--amber-bg:#fff8c5}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1117;--bg2:#161b22;--text:#e6edf3;--text2:#8b949e;--text3:#656d76;--border:#30363d;--accent:#58a6ff;--accent-bg:#1a2332;--green:#2ea043;--green-bg:#0f2d16;--red:#f85149;--red-bg:#3a1a1a;--code-bg:#1c2129;--purple:#bc8cff;--purple-bg:#2a1a3a;--amber:#e3b341;--amber-bg:#2a2000}}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px}.container{max-width:720px;margin:0 auto;padding:2rem 1.5rem 5rem}.back{display:inline-block;font-size:.875rem;color:var(--accent);text-decoration:none;margin-bottom:1.5rem}.back:hover{text-decoration:underline}h1{font-size:1.6rem;font-weight:700;line-height:1.3;margin-bottom:.75rem}.launch-meta{font-size:.875rem;color:var(--text2);margin-bottom:.35rem}.launch-meta a{color:var(--accent);text-decoration:none}.launch-meta a:hover{text-decoration:underline}.header-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1rem}.badge{font-size:.75rem;font-weight:600;padding:3px 10px;border-radius:4px}.badge.category{background:var(--accent-bg);color:var(--accent)}.badge.urgency{background:var(--amber-bg);color:var(--amber)}.badge.score{background:var(--green-bg);color:var(--green)}.tldr{font-size:.9rem;color:var(--text2);padding:1rem 1.25rem;background:var(--bg2);border-radius:8px;margin-bottom:2rem;border-left:3px solid var(--accent)}.section{margin-bottom:2.5rem;border:1px solid var(--border);border-radius:10px;overflow:hidden}.section-header{display:flex;align-items:center;gap:.75rem;padding:1rem 1.25rem;cursor:pointer;background:var(--bg2);user-select:none;border-bottom:1px solid var(--border)}.section-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:600;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--accent);color:#fff}.section-header h2{font-size:1rem;font-weight:600;margin:0;flex:1}.chevron{font-size:.8rem;color:var(--text3);transition:transform .2s}.section.open .chevron{transform:rotate(180deg)}.section-body{display:none;padding:1.5rem 1.25rem}.section.open .section-body{display:block}h3{font-size:1rem;font-weight:600;margin:1.5rem 0 .5rem}.section-body>h3:first-child{margin-top:0}p{margin-bottom:.75rem}ul,ol{margin:0 0 .75rem 1.25rem}li{margin-bottom:.25rem}strong{font-weight:600}em{font-style:italic}code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:var(--code-bg);padding:1px 5px;border-radius:3px}pre{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:1rem;overflow-x:auto;margin:.75rem 0;font-size:.8rem;line-height:1.5}pre code{background:none;padding:0}table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:.875rem}th{text-align:left;font-weight:600;padding:.5rem .75rem;border-bottom:2px solid var(--border);font-size:.8rem}td{padding:.5rem .75rem;border-bottom:1px solid var(--border)}tr:last-child td{border-bottom:none}.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin:.75rem 0}.card-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem}.card-label.green{color:var(--green)}.card-label.amber{color:var(--amber)}.card-label.red{color:var(--red)}.card-label.blue{color:var(--accent)}.card-label.purple{color:var(--purple)}.card p:last-child{margin-bottom:0}.takeaway{background:var(--accent-bg);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1.25rem 0}.takeaway-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:.35rem}.takeaway p:last-child{margin-bottom:0}.result-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.75rem 0}.result-box{text-align:center;padding:1rem;border-radius:8px}.result-box.green-bg{background:var(--green-bg);border:1px solid var(--green)}.result-box.amber-bg{background:var(--amber-bg);border:1px solid var(--amber)}.result-box.red-bg{background:var(--red-bg);border:1px solid var(--red)}@media(prefers-color-scheme:dark){.result-box.amber-bg{background:#2a2000;border-color:var(--amber)}}.result-number{font-size:1.75rem;font-weight:700;line-height:1}.result-box.green-bg .result-number{color:var(--green)}.result-box.amber-bg .result-number{color:var(--amber)}.result-box.red-bg .result-number{color:var(--red)}.result-label{font-size:.75rem;color:var(--text2);margin-top:.25rem}
+.quiz{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-top:1.5rem}.quiz-title{font-weight:600;font-size:.9rem;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}.q{margin-bottom:1.25rem}.q:last-of-type{margin-bottom:.5rem}.q-text{font-weight:500;font-size:.9rem;margin-bottom:.5rem}.q-options{list-style:none;padding:0;margin:0}.q-btn{display:block;width:100%;text-align:left;padding:.5rem .85rem;margin:.3rem 0;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;font-size:.85rem;font-family:inherit;color:var(--text);transition:border-color .12s,background .12s}.q-btn:hover:not(:disabled){border-color:var(--accent);background:var(--accent-bg)}.q-btn:disabled{cursor:default}.q-btn:disabled:hover{border-color:inherit;background:inherit}.q-btn.correct{border-color:var(--green)!important;background:var(--green-bg)!important}.q-btn.incorrect{border-color:var(--red)!important;background:var(--red-bg)!important;opacity:.7}.q-btn.reveal{border-color:var(--green)!important;background:var(--green-bg)!important}.q-explain{display:none;font-size:.8rem;color:var(--text2);margin:.4rem 0 0;padding:.5rem .85rem;border-left:2px solid var(--border)}.q-explain.show{display:block}.score{display:none;padding:.85rem 1rem;border-radius:6px;font-weight:600;font-size:.9rem;margin-top:.75rem}.score.show{display:block}.score.pass{background:var(--green-bg);border:1px solid var(--green);color:var(--green)}.score.fail{background:var(--red-bg);border:1px solid var(--red);color:var(--red)}.reset-btn{display:none;margin-top:.5rem;padding:.4rem 1rem;border:1px solid var(--border);border-radius:6px;background:var(--bg);cursor:pointer;font-size:.8rem;font-family:inherit;color:var(--text)}.reset-btn.show{display:inline-block}.reset-btn:hover{border-color:var(--accent);background:var(--accent-bg)}
+.tags-row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}.tag-pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:2px 8px;border-radius:4px;background:var(--bg2);border:1px solid var(--border);color:var(--text2)}
+@media(max-width:600px){.result-row{grid-template-columns:1fr}.container{padding:1.5rem 1rem 4rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<a class="back" href="../index.html">&larr; Back to all teardowns</a>
+<h1>OpenAI: Erdős Unit Distance Disproof</h1>
+<p class="launch-meta">OpenAI &mdash; May 20, 2026 &mdash; Internal reasoning model (speculated GPT-5.6)</p>
+<p class="launch-meta"><a href="https://openai.com/index/model-disproves-discrete-geometry-conjecture/">&#128279; Official announcement</a></p>
+<div class="header-badges">
+  <span class="badge category">Research + Code</span>
+  <span class="badge urgency">🟡 Track</span>
+  <span class="badge score">18/20</span>
+</div>
+<div class="tldr"><strong>TL;DR:</strong> A general-purpose unreleased OpenAI reasoning model autonomously disproved the 80-year-old Erd&odblac;s unit distance conjecture &mdash; the first time AI has solved a prominent open research problem. The proof used unexpected tools from algebraic number theory (Golod&ndash;Shafarevich theory, infinite class field towers), was verified by Fields medalist Tim Gowers and other leading mathematicians, and cost &lt;$1,000 in compute. This marks a qualitative jump from competition math (IMO Gold) to open research.</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<div class="section open" id="s1"><div class="section-header" onclick="toggle('s1')"><div class="section-num">1</div><h2>What Launched</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<pre><code>Company:        OpenAI
+Product/Model:  Internal reasoning model (speculated GPT-5.6 / "GPT-next")
+One-line:       General-purpose LLM autonomously disproved an 80-year-old 
+                Erdős conjecture in discrete geometry — first AI to solve 
+                a prominent open research problem
+Access:         Closed (internal model, not yet released)
+Pricing signal: N/A — Latent Space estimates &lt;$1,000 in compute</code></pre>
+
+<h3>The problem</h3>
+<p>The planar unit distance problem, posed by Paul Erd&odblac;s in 1946: if you place <em>n</em> points in the plane, how many pairs can be exactly distance 1 apart? For 80 years, mathematicians believed the &ldquo;square grid&rdquo; construction was essentially optimal, yielding growth of n<sup>1+C/log&thinsp;log(n)</sup>.</p>
+
+<h3>What the model did</h3>
+<p>The model constructed an infinite family of configurations achieving n<sup>1+&delta;</sup> unit-distance pairs for a fixed &delta; &gt; 0, disproving the conjecture. Princeton&rsquo;s Will Sawin later refined &delta; = 0.014.</p>
+
+<div class="takeaway"><div class="takeaway-label">Key takeaway</div><p>This is not a competition problem with a known answer. It&rsquo;s an open research problem where no solution previously existed. The model found one autonomously.</p></div>
+
+</div></div>
+
+<!-- ==================== SECTION 2 ==================== -->
+<div class="section" id="s2"><div class="section-header" onclick="toggle('s2')"><div class="section-num">2</div><h2>Version Context</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<pre><code>Previous version:       IMO Gold (July 2025) — general-purpose LLM 
+                        scored 35/42 on International Math Olympiad
+Time between versions:  ~10 months
+What v(n-1) couldn't do: Solve OPEN research problems — IMO Gold was 
+                          competition math (known solutions exist)
+What users complained:   "Olympiad problems ≠ research" — the AI is 
+                          pattern-matching within known solution spaces
+What was promised:       Reasoning that generalizes to real science</code></pre>
+
+<h3>Delta assessment</h3>
+<table>
+<tr><th>Dimension</th><th>IMO Gold</th><th>Erd&odblac;s Disproof</th></tr>
+<tr><td>Quality</td><td>Competition (known solutions)</td><td>Open research (no known solution)</td></tr>
+<tr><td>Reasoning depth</td><td>Multi-page proofs</td><td>125-page chain of thought</td></tr>
+<tr><td>Domain transfer</td><td>Math only</td><td>Algebraic # theory &rarr; geometry</td></tr>
+<tr><td>Verification</td><td>Self-scored (contested)</td><td>Fields medalist + external panel</td></tr>
+<tr><td>Generality</td><td>General LLM</td><td>General LLM (same)</td></tr>
+</table>
+
+<div class="card"><div class="card-label amber">VELOCITY</div>
+<p><strong>Accelerating.</strong> Competition math &rarr; open research is a qualitative jump, not a quantitative improvement.</p>
+<p><strong>Still not fixed:</strong> Model unreleased. Single result. Success rate on other Erd&odblac;s problems not disclosed.</p>
+<p><strong>Predicted next move:</strong> Release this model publicly. Then target a constructive proof or a result in a harder domain (physics, biology).</p>
+</div>
+
+</div></div>
+
+<!-- ==================== SECTION 3 ==================== -->
+<div class="section" id="s3"><div class="section-header" onclick="toggle('s3')"><div class="section-num">3</div><h2>What's Actually New</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<h3>Evidence quality: STRONG</h3>
+<p>Verified by Fields medalist Tim Gowers, Thomas Bloom, Noga Alon (Princeton), Arul Shankar. Will Sawin (Princeton) independently refined the result to &delta; = 0.014. Companion paper published.</p>
+
+<h3>Genuine novelty</h3>
+<ul>
+<li><strong>Open problem, not competition problem</strong> &mdash; qualitative jump from IMO-level math</li>
+<li><strong>Cross-domain insight:</strong> algebraic number theory (Golod&ndash;Shafarevich theory, infinite class field towers) applied to a geometry question nobody expected these tools to reach</li>
+<li><strong>General-purpose model</strong> &mdash; not a math-specific system, not scaffolded, not AlphaProof-style</li>
+<li><strong>125-page reasoning chain</strong> = sustained long-horizon coherence</li>
+<li><strong>&lt;$1,000 compute</strong> for a research-grade result</li>
+</ul>
+
+<h3>Recycled packaging</h3>
+<ul>
+<li>&ldquo;AI does math&rdquo; narrative is familiar (AlphaProof, IMO Gold)</li>
+<li>The model itself isn&rsquo;t new &mdash; it&rsquo;s an unreleased internal model</li>
+<li>Disproof via counterexample construction is less impressive than a constructive proof or new theory</li>
+</ul>
+
+</div></div>
+
+<!-- ==================== SECTION 4 ==================== -->
+<div class="section" id="s4"><div class="section-header" onclick="toggle('s4')"><div class="section-num">4</div><h2>Technical Snapshot</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<pre><code>Architecture:     Unreleased general-purpose reasoning model.
+                  Speculated GPT-5.6 class. Extended test-time compute 
+                  (thinking for &lt;32 hours). NOT scaffolded, NOT math-specific.
+
+Training data:    The cross-domain insight (number theory → geometry) suggests 
+                  deep coverage of mathematical literature and ability to 
+                  connect distant subfields — a signal about training data 
+                  breadth and reasoning over it.
+
+Scale:            125 pages of reasoning = massive test-time compute budget.
+                  &lt;$1,000 total compute cost suggests efficient inference or 
+                  that the model found the proof path relatively directly.
+
+Key limitation:   One result on one problem. No systematic evaluation 
+                  of success rates on other open problems. The "page 39 
+                  moment" (key conceptual leap) raises the question: is 
+                  this systematic reasoning or a lucky search path?</code></pre>
+
+</div></div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<div class="section" id="s5"><div class="section-header" onclick="toggle('s5')"><div class="section-num">5</div><h2>Limitations &amp; Flags</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<div class="card"><div class="card-label red">🔴 DEALBREAKERS</div>
+<ul>
+<li>Model is internal and unreleased &mdash; can&rsquo;t reproduce or build on it</li>
+<li>Single result, no systematic benchmark of open-problem-solving</li>
+</ul></div>
+
+<div class="card"><div class="card-label amber">🟡 NEEDS MONITORING</div>
+<ul>
+<li>Disproof &ne; proof: constructing a counterexample is generally easier than proving a positive result</li>
+<li>Success rate on other Erd&odblac;s problems not disclosed &mdash; potential cherry-picking</li>
+<li>&ldquo;Checked by external mathematicians&rdquo; but OpenAI chose which mathematicians and which results to publish</li>
+<li>Some critics note reliance on uncredited prior mathematical work</li>
+</ul></div>
+
+<div class="card"><div class="card-label green">🟢 ACCEPTABLE</div>
+<ul>
+<li>The proof uses well-known tools (Golod&ndash;Shafarevich) in a new way &mdash; novelty is in the connection, not the tools</li>
+<li>125 pages may not be necessary &mdash; a human might find a shorter path</li>
+</ul></div>
+
+<table>
+<tr><th>Dimension</th><th>Assessment</th></tr>
+<tr><td>Safety / trust</td><td>N/A (math, not generation)</td></tr>
+<tr><td>Hallucination</td><td>Proof was verified &mdash; hallucination didn&rsquo;t survive review. But unverified runs?</td></tr>
+<tr><td>Scale / latency</td><td>32 hours per problem = not real-time reasoning</td></tr>
+<tr><td>Regulatory</td><td>N/A</td></tr>
+<tr><td>Dependency risks</td><td>Internal model = no external dependency</td></tr>
+</table>
+
+</div></div>
+
+<!-- ==================== SECTION 6 ==================== -->
+<div class="section" id="s6"><div class="section-header" onclick="toggle('s6')"><div class="section-num">6</div><h2>Relevance Matrix</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<h3>Ring 1 &mdash; AI/ML Research Teams</h3>
+
+<table>
+<tr><th></th><th>Perception</th><th>Generation</th></tr>
+<tr><td>Direct</td><td></td><td></td></tr>
+<tr><td>Indirect</td><td></td><td>&checkmark;</td></tr>
+</table>
+
+<p><strong>Generation angle:</strong> The cross-domain reasoning capability (connecting distant knowledge areas to solve novel problems) is the same capability needed for creative generation &mdash; connecting user intent, aesthetic principles, and technical constraints in novel combinations.</p>
+<p><strong>Loop connection:</strong> Weak. Pure reasoning, not perception-generation. But: if reasoning models can discover novel connections, that&rsquo;s relevant for generation models discovering novel visual/audio combinations.</p>
+
+<h3>Ring 2 &mdash; Foundation Model Research Labs</h3>
+
+<table>
+<tr><th>Area</th><th>Hit?</th><th>How</th></tr>
+<tr><td>Foundation Models</td><td>🟡</td><td>Validates extended test-time compute as a scaling axis</td></tr>
+<tr><td>Reasoning / RL</td><td>🔴</td><td>Direct competitive signal &mdash; OpenAI&rsquo;s reasoning frontier producing research-grade results</td></tr>
+<tr><td>Eval / Benchmarks</td><td>🟡</td><td>Open problems &gt; competition benchmarks as evaluation</td></tr>
+<tr><td>Data / Training</td><td>🟡</td><td>Cross-domain training data coverage matters for this</td></tr>
+<tr><td>AI Infra / Compute</td><td>🟢</td><td>&lt;$1K for a research result = inference cost is viable</td></tr>
+</table>
+
+<h3>Ring 3 &mdash; Major AI-Powered Products &amp; Platforms</h3>
+
+<table>
+<tr><th>Surface</th><th>Hit?</th><th>How</th></tr>
+<tr><td>AI Assistants</td><td>🟡</td><td>If reasoning at this level reaches consumer models, assistants need to match for &ldquo;hard question&rdquo; use cases</td></tr>
+<tr><td>Developer tools</td><td>🟢</td><td>Extended reasoning for code generation / debugging</td></tr>
+<tr><td>Search / discovery</td><td></td><td></td></tr>
+<tr><td>Creative tools</td><td></td><td></td></tr>
+</table>
+
+<div class="takeaway"><div class="takeaway-label">Broader AI field signal</div>
+<p>Confirms: test-time compute scaling is producing qualitatively new capabilities, not just benchmark improvements. Confirms: general-purpose &gt; specialized for surprising results. Challenges: the &ldquo;AI plateau&rdquo; narrative &mdash; this is concrete evidence of capability gain.</p>
+</div>
+
+</div></div>
+
+<!-- ==================== SECTION 7 ==================== -->
+<div class="section" id="s7"><div class="section-header" onclick="toggle('s7')"><div class="section-num">7</div><h2>Competitive Positioning</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<pre><code>vs. industry current:  OpenAI is AHEAD — no public equivalent of this 
+                       reasoning capability on open research problems
+vs. industry roadmap:  GAP — unclear if competitors are pursuing extended 
+                       reasoning at this scale for scientific discovery
+Moat assessment:       Talent + Compute — required both a frontier model 
+                       AND willingness to burn 32 hours of compute on a 
+                       single problem. Distribution doesn't matter here.
+Who should worry:      Reasoning / RL teams at competing labs. If OpenAI's 
+                       general-purpose models are solving research problems, 
+                       that's a signal about foundation model capability.</code></pre>
+
+</div></div>
+
+<!-- ==================== SECTION 8 ==================== -->
+<div class="section" id="s8"><div class="section-header" onclick="toggle('s8')"><div class="section-num">8</div><h2>The &ldquo;So What&rdquo;</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<div class="card"><div class="card-label blue">IF THIS IS REAL, WHAT CHANGES?</div>
+<p>Test-time compute scaling just got its killer demo. The &ldquo;inference is the new training&rdquo; thesis has a concrete proof point. Models that can think for 32 hours and produce verified novel results are a new tool category &mdash; not chatbots, not agents, but <strong>research collaborators</strong>.</p>
+</div>
+
+<div class="card"><div class="card-label amber">IF WE IGNORE THIS, WHAT'S THE RISK?</div>
+<p>Low near-term product risk (math proofs &ne; consumer features). Medium strategic risk: if OpenAI&rsquo;s reasoning frontier is producing research-grade results, their foundation models may be pulling ahead in ways that compound across domains.</p>
+</div>
+
+<div class="takeaway"><div class="takeaway-label">Action item</div>
+<p><strong>Track.</strong> No immediate action required. But the centaur pattern holds: the model did the search, the humans (Gowers, Sawin) did the verification and refinement. Operator skill still matters. Research labs should assess their roadmap for extended test-time compute in scientific reasoning.</p>
+</div>
+
+</div></div>
+
+<!-- ==================== SECTION 9 ==================== -->
+<div class="section" id="s9"><div class="section-header" onclick="toggle('s9')"><div class="section-num">9</div><h2>Scorecard</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<div class="result-row">
+<div class="result-box green-bg"><div class="result-number">5/5</div><div class="result-label">Novelty &mdash; first open research problem solved by AI</div></div>
+<div class="result-box green-bg"><div class="result-number">4/5</div><div class="result-label">Execution &mdash; Fields medalist verified, but unreleased &amp; single result</div></div>
+</div>
+<div class="result-row">
+<div class="result-box amber-bg"><div class="result-number">3/5</div><div class="result-label">Threat Level &mdash; not a product threat; strategic signal</div></div>
+<div class="result-box green-bg"><div class="result-number">5/5</div><div class="result-label">Signal Value &mdash; validates test-time compute scaling</div></div>
+</div>
+
+<div class="card"><div class="card-label green">FINAL SCORE</div>
+<p style="font-size:1.5rem;font-weight:700;margin-bottom:.25rem">18/20</p>
+<p>17/20 base + 1 delta bonus (velocity accelerating: competition &rarr; research)</p>
+</div>
+
+</div></div>
+
+<!-- ==================== SECTION 10 ==================== -->
+<div class="section" id="s10"><div class="section-header" onclick="toggle('s10')"><div class="section-num">10</div><h2>Reception Check</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+
+<h3>Social pulse (Twitter/X)</h3>
+<pre><code>Hype level:        Viral — top technical post of the week
+Builder sentiment: Genuinely impressed. Not the usual benchmark skepticism.
+Notable takes:     
+  Gowers:  "a milestone in AI mathematics"
+  Shankar: "AI models go beyond just helpers — capable of 
+            original ingenious ideas"
+  Bloom:   "AI is helping us explore the cathedral of mathematics"
+  Latent Space: "&lt;$1,000 for a research result" framing went viral
+Ratio check:       ~80/20 praise vs. skepticism. Even skeptics 
+                   acknowledge the result is real.</code></pre>
+
+<h3>Press &amp; analyst</h3>
+<pre><code>Coverage volume:   Major — every AI outlet covered it
+Narrative:         "AI crosses the research frontier"
+Key articles:      Latent Space deep dive (best technical analysis)
+                   Technology.org (good skeptical framing)
+                   Medium/Anatol Wegner (critical on authorship)</code></pre>
+
+<div class="card"><div class="card-label blue">REALITY GAP: ALIGNED</div>
+<p>Unusually, OpenAI&rsquo;s framing matched external expert reception. Verification by Gowers removes the usual &ldquo;trust us&rdquo; problem. The main gap: OpenAI implies this generalizes to science broadly, which is unproven.</p>
+</div>
+
+</div></div>
+
+<!-- ==================== SECTION 11 ==================== -->
+<div class="section" id="s11"><div class="section-header" onclick="toggle('s11')"><div class="section-num">11</div><h2>Tags</h2><span class="chevron">&#9660;</span></div><div class="section-body">
+<div class="tags-row">
+<span class="tag-pill">#reasoning</span>
+<span class="tag-pill">#math</span>
+<span class="tag-pill">#test-time-compute</span>
+<span class="tag-pill">#openai</span>
+<span class="tag-pill">#erdos</span>
+<span class="tag-pill">#general-purpose</span>
+<span class="tag-pill">#research-frontier</span>
+<span class="tag-pill">#cross-domain</span>
+</div>
+</div></div>
+
+<!-- ==================== QUIZ ==================== -->
+<div class="quiz" id="quiz"><div class="quiz-title">Teardown Quiz &mdash; 10 Questions</div>
+
+<div class="q"><div class="q-text">1. [Section 1] What type of system produced the proof?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,0,false)">A) A specialized mathematical theorem prover built on the Lean formal verification framework with domain-specific training data</button></li>
+<li><button class="q-btn" onclick="ans(this,0,false)">B) A reinforcement learning system trained exclusively on IMO competition problems and gradually scaled to research-level difficulty</button></li>
+<li><button class="q-btn" onclick="ans(this,0,true)">C) A general-purpose unreleased reasoning model that was not specifically trained for or scaffolded toward mathematics problems</button></li>
+<li><button class="q-btn" onclick="ans(this,0,false)">D) A hybrid system combining symbolic computation engines with neural retrieval over the full ArXiv mathematical literature corpus</button></li>
+</ul><div class="q-explain" id="ex-0">OpenAI emphasized this was a general-purpose reasoning model, not a domain-specific math system like AlphaProof. It was not scaffolded to search through proof strategies or targeted at the unit distance problem in particular.</div></div>
+
+<div class="q"><div class="q-text">2. [Section 2] What is the key qualitative jump from the IMO Gold result to this achievement?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,1,true)">A) Moving from competition problems with known solutions to solving an open research problem where no solution previously existed</button></li>
+<li><button class="q-btn" onclick="ans(this,1,false)">B) Achieving a higher accuracy score on the same International Mathematical Olympiad problem set with fewer computational resources</button></li>
+<li><button class="q-btn" onclick="ans(this,1,false)">C) Demonstrating the ability to write formal proofs in Lean 4 rather than producing informal natural-language mathematical arguments</button></li>
+<li><button class="q-btn" onclick="ans(this,1,false)">D) Reducing the compute cost from millions of dollars for IMO Gold down to under one thousand dollars for equivalent difficulty</button></li>
+</ul><div class="q-explain" id="ex-1">IMO Gold solved competition problems that humans had already solved. This result solved an open research problem where no prior solution existed &mdash; a qualitatively different achievement, not just more of the same.</div></div>
+
+<div class="q"><div class="q-text">3. [Section 3] What makes the proof&rsquo;s use of algebraic number theory significant?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,2,false)">A) It proved that algebraic number theory is computationally equivalent to discrete geometry, establishing a new branch of unified mathematics</button></li>
+<li><button class="q-btn" onclick="ans(this,2,false)">B) It automated the standard number-theoretic approach that human mathematicians had been incrementally refining for the past two decades</button></li>
+<li><button class="q-btn" onclick="ans(this,2,false)">C) It used Golod&ndash;Shafarevich theory to construct an explicit counterexample with exactly ten thousand points in the Euclidean plane</button></li>
+<li><button class="q-btn" onclick="ans(this,2,true)">D) It brought unexpected tools from a distant mathematical subfield to bear on an elementary geometric question, revealing a cross-domain connection</button></li>
+</ul><div class="q-explain" id="ex-2">The tools (Golod&ndash;Shafarevich theory, infinite class field towers) were well-known to algebraic number theorists, but nobody expected them to have implications for geometric questions in the Euclidean plane. The novelty is in the cross-domain connection, not the tools themselves.</div></div>
+
+<div class="q"><div class="q-text">4. [Section 4] What is the most accurate characterization of the model&rsquo;s technical approach?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,3,false)">A) A transformer with 1.8 trillion parameters and a custom mathematical tokenizer optimized for formal proof generation</button></li>
+<li><button class="q-btn" onclick="ans(this,3,true)">B) Almost nothing beyond &ldquo;general-purpose reasoning model&rdquo; &mdash; architecture, training data, and model name are all undisclosed</button></li>
+<li><button class="q-btn" onclick="ans(this,3,false)">C) A mixture-of-experts model where dedicated math expert modules are activated during extended reasoning chains exceeding 100 pages</button></li>
+<li><button class="q-btn" onclick="ans(this,3,false)">D) An open-weight model fully documented in the companion paper authored by Gowers et al.</button></li>
+</ul><div class="q-explain" id="ex-3">OpenAI disclosed almost nothing about the model&rsquo;s technical details. The speculated &ldquo;GPT-5.6&rdquo; name comes from external observers. The companion paper was written by mathematicians verifying the result, not describing the model.</div></div>
+
+<div class="q"><div class="q-text">5. [Section 5] Why is the &ldquo;disproof&rdquo; classification an important limitation flag?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,4,false)">A) The mathematical community does not formally recognize disproofs as valid contributions without accompanying constructive alternatives</button></li>
+<li><button class="q-btn" onclick="ans(this,4,false)">B) Erd&odblac;s specifically offered a monetary prize only for proving the conjecture true, making the disproof ineligible</button></li>
+<li><button class="q-btn" onclick="ans(this,4,true)">C) Constructing a counterexample that disproves a conjecture is generally a less demanding mathematical feat than proving a positive result or building new theory</button></li>
+<li><button class="q-btn" onclick="ans(this,4,false)">D) Disproofs produced by AI systems cannot be independently verified because they rely on computational search beyond human capacity</button></li>
+</ul><div class="q-explain" id="ex-4">While disproofs are absolutely valid mathematical contributions, constructing a counterexample is generally considered less demanding than building new theory or proving positive results. This nuance matters when assessing the significance of the achievement.</div></div>
+
+<div class="q"><div class="q-text">6. [Section 6] How does this launch connect to AI-powered creative generation?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,5,true)">A) Weakly &mdash; the cross-domain reasoning capability is the same type needed for connecting user intent, aesthetic principles, and technical constraints in novel combinations</button></li>
+<li><button class="q-btn" onclick="ans(this,5,false)">B) Directly &mdash; the proof techniques can optimize neural network architectures used in image and video generation pipelines</button></li>
+<li><button class="q-btn" onclick="ans(this,5,false)">C) Strongly &mdash; the 125-page output demonstrates sustained coherence needed for long-form video generation at production quality</button></li>
+<li><button class="q-btn" onclick="ans(this,5,false)">D) Not at all &mdash; pure mathematical reasoning operates in a completely separate domain from any generation capabilities</button></li>
+</ul><div class="q-explain" id="ex-5">The connection is indirect but real: the ability to connect distant knowledge areas (algebraic number theory &rarr; geometry) mirrors the creative generation challenge of connecting user intent, aesthetic principles, and constraints in novel combinations. But it&rsquo;s a weak connection, not a direct one.</div></div>
+
+<div class="q"><div class="q-text">7. [Section 6] Which research area receives the strongest competitive signal from this launch?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,6,false)">A) AI infrastructure &mdash; the finding that results cost under $1K proves current compute investments are fundamentally misdirected</button></li>
+<li><button class="q-btn" onclick="ans(this,6,false)">B) Safety and alignment &mdash; autonomous mathematical discovery reveals critical alignment failures requiring immediate containment</button></li>
+<li><button class="q-btn" onclick="ans(this,6,false)">C) Data and training &mdash; mathematical pre-training data is the single most important factor in frontier model performance across all domains</button></li>
+<li><button class="q-btn" onclick="ans(this,6,true)">D) Reasoning and reinforcement learning &mdash; OpenAI&rsquo;s reasoning frontier producing research-grade results is a direct competitive indicator</button></li>
+</ul><div class="q-explain" id="ex-6">The result directly signals that OpenAI&rsquo;s reasoning capabilities have reached a qualitatively new level. The strongest competitive signal goes to reasoning/RL teams at other labs, because this demonstrates capability that no competitor has publicly matched.</div></div>
+
+<div class="q"><div class="q-text">8. [Section 7] What is the assessed competitive moat for this result?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,7,false)">A) Distribution advantage &mdash; ChatGPT&rsquo;s user base ensures the math result reaches more people than competitors could achieve</button></li>
+<li><button class="q-btn" onclick="ans(this,7,true)">B) Talent plus compute &mdash; producing this required both a frontier model and willingness to allocate 32 hours of inference compute per problem</button></li>
+<li><button class="q-btn" onclick="ans(this,7,false)">C) Patent protection &mdash; OpenAI filed provisional patents on the test-time compute technique preventing replication</button></li>
+<li><button class="q-btn" onclick="ans(this,7,false)">D) Data exclusivity &mdash; exclusive licensing agreements with math publishers prevent other labs from equivalent training</button></li>
+</ul><div class="q-explain" id="ex-7">The moat is talent combined with compute. Distribution doesn&rsquo;t matter for a research result &mdash; there are no &ldquo;users&rdquo; to distribute to. What matters is having a model capable of sustained reasoning AND the willingness to spend 32 hours of compute on a single problem.</div></div>
+
+<div class="q"><div class="q-text">9. [Section 8] What is the recommended action item?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,8,false)">A) Immediately redirect resources toward mathematical reasoning benchmarks to close the gap</button></li>
+<li><button class="q-btn" onclick="ans(this,8,false)">B) Acquire the companion paper authors as research advisors to prevent OpenAI from maintaining exclusive verification partnerships</button></li>
+<li><button class="q-btn" onclick="ans(this,8,true)">C) Track without immediate action, but assess the roadmap for extended test-time compute in scientific reasoning applications</button></li>
+<li><button class="q-btn" onclick="ans(this,8,false)">D) Publicly announce competing mathematical reasoning results within 30 days to counter the narrative</button></li>
+</ul><div class="q-explain" id="ex-8">The recommended action is &ldquo;Track.&rdquo; No immediate action is required because the near-term product risk is low. But it&rsquo;s a strategic signal that warrants assessing whether labs are investing in extended test-time compute for scientific reasoning, where OpenAI appears to be pulling ahead.</div></div>
+
+<div class="q"><div class="q-text">10. [Sections 9+10] Why does the scorecard assign 5/5 for both Novelty and Signal Value?</div><ul class="q-options">
+<li><button class="q-btn" onclick="ans(this,9,true)">A) First open research problem solved by AI earns maximum novelty, and the result validates test-time compute scaling and general-purpose superiority as field-wide trends</button></li>
+<li><button class="q-btn" onclick="ans(this,9,false)">B) The 125-page proof length sets a new record for AI output, and the stock market reaction exceeded all prior model launches</button></li>
+<li><button class="q-btn" onclick="ans(this,9,false)">C) Tim Gowers is the most prestigious validator possible, and his endorsement alone justifies maximum scores in both dimensions</button></li>
+<li><button class="q-btn" onclick="ans(this,9,false)">D) The model achieved perfect accuracy on all Erd&odblac;s problems evaluated, and compute cost reduction from millions to under $1K signals exponential progress</button></li>
+</ul><div class="q-explain" id="ex-9">Novelty 5/5 because this is literally the first time AI has solved a prominent open research problem &mdash; that&rsquo;s maximally novel by definition. Signal Value 5/5 because the result validates two major field-wide trends: test-time compute scaling produces qualitatively new capabilities, and general-purpose models outperform specialized ones for surprising results.</div></div>
+
+<div class="score" id="quiz-score"></div><button class="reset-btn" id="quiz-reset" onclick="resetQuiz()">Try again</button>
+</div>
+
+</div>
+<script>
+function toggle(id){document.getElementById(id).classList.toggle('open')}
+var qState={answered:0,correct:0,total:10};
+function ans(btn,qIdx,correct){
+  var q=btn.closest('.q'),btns=q.querySelectorAll('.q-btn');
+  if(btn.classList.contains('correct')||btn.classList.contains('incorrect'))return;
+  btns.forEach(function(b){b.disabled=true});
+  if(correct){btn.classList.add('correct');qState.correct++}
+  else{btn.classList.add('incorrect');btns.forEach(function(b){if(b!==btn&&b.getAttribute('onclick').indexOf('true')!==-1)b.classList.add('reveal')})}
+  var ex=document.getElementById('ex-'+qIdx);if(ex)ex.classList.add('show');
+  qState.answered++;
+  if(qState.answered===qState.total){
+    var sc=document.getElementById('quiz-score');
+    sc.textContent=qState.correct+'/'+qState.total+(qState.correct>=8?' — Excellent!':(qState.correct>=6?' — Good':' — Review the teardown'));
+    sc.className='score show '+(qState.correct>=8?'pass':'fail');
+    document.getElementById('quiz-reset').classList.add('show');
+  }
+}
+function resetQuiz(){
+  qState={answered:0,correct:0,total:10};
+  var quiz=document.getElementById('quiz');
+  quiz.querySelectorAll('.q-btn').forEach(function(b){b.disabled=false;b.classList.remove('correct','incorrect','reveal')});
+  quiz.querySelectorAll('.q-explain').forEach(function(e){e.classList.remove('show')});
+  document.getElementById('quiz-score').classList.remove('show');
+  document.getElementById('quiz-reset').classList.remove('show');
+}
+</script>
+</body>
+</html>
